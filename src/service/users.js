@@ -1,10 +1,6 @@
 'use strict';
 
-const users = [];
-
-const resetUsers = () => {
-  users.length = 0;
-};
+let users = [];
 
 const getAllUsers = () => {
   if (users.length === 0) {
@@ -15,13 +11,7 @@ const getAllUsers = () => {
 };
 
 const getUserById = (id) => {
-  const index = users.findIndex((user) => user.id === +id);
-
-  if (index === -1) {
-    return null;
-  }
-
-  return users[index];
+  return users.find((user) => user.id === +id);
 };
 
 const createUser = (name) => {
@@ -36,15 +26,7 @@ const createUser = (name) => {
 };
 
 const deleteUser = (id) => {
-  const index = users.findIndex((user) => user.id === +id);
-
-  if (index === -1) {
-    return null;
-  }
-
-  users.splice(index, 1);
-
-  return true;
+  users = users.filter((user) => user.id !== id);
 };
 
 const updateUser = (id, name) => {
@@ -59,11 +41,15 @@ const updateUser = (id, name) => {
   return users[index];
 };
 
+const clear = () => {
+  users = [];
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUser,
   deleteUser,
   updateUser,
-  resetUsers,
+  clear,
 };

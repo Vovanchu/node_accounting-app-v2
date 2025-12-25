@@ -1,5 +1,5 @@
-const expenss = require('express');
-const route = expenss.Router();
+const express = require('express');
+const route = express.Router();
 const controllerExpense = require('../controller/expensesController.js');
 
 route.get('/', controllerExpense.getAllExpenses);

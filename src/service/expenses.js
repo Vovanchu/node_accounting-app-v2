@@ -2,12 +2,8 @@
 
 let expenses = [];
 
-const resetExpenses = () => {
-  expenses = [];
-};
-
-const getAllExpenses = (id) => {
-  return expenses.find((expense) => expense.id === id);
+const getAllExpenses = () => {
+  return expenses;
 };
 
 const getByQuery = (query) => {
@@ -66,15 +62,7 @@ const createExpense = (expenseData) => {
 };
 
 const deleteExpense = (id) => {
-  const index = expenses.findIndex((exp) => exp.id === +id);
-
-  if (index === -1) {
-    return false;
-  }
-
-  expenses.splice(index, 1);
-
-  return true;
+  expenses = expenses.filter((expense) => expense.id !== id);
 };
 
 const updateExpense = (id, expenseData) => {
@@ -89,6 +77,10 @@ const updateExpense = (id, expenseData) => {
   return expenses[index];
 };
 
+const clear = () => {
+  expenses = [];
+};
+
 module.exports = {
   getAllExpenses,
   getByQuery,
@@ -96,5 +88,5 @@ module.exports = {
   createExpense,
   deleteExpense,
   updateExpense,
-  resetExpenses,
+  clear,
 };

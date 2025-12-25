@@ -2,10 +2,6 @@
 
 const serviceUser = require('../service/users');
 
-beforeEach(() => {
-  serviceUser.resetUsers();
-});
-
 const getAllUsers = (req, res) => {
   res.send(serviceUser.getAllUsers());
 };
@@ -45,23 +41,17 @@ const createUser = (req, res) => {
 };
 
 const deleteUser = (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
 
-  if (!id) {
-    res.status(400).send('User ID is required');
+  const user = serviceUser.getUserById(+id);
 
-    return;
+  if (!user) {
+    return res.sendStatus(404);
   }
 
-  const deleted = serviceUser.deleteUser(id);
+  serviceUser.deleteUser(+id);
 
-  if (deleted === null) {
-    res.status(404).send('Not Found');
-
-    return;
-  }
-
-  res.status(204).send('No Content');
+  return res.sendStatus(204);
 };
 
 const updateUser = (req, res) => {

@@ -3,10 +3,6 @@
 const serviceExpense = require('../service/expenses.js');
 const serviceUser = require('../service/users.js');
 
-beforeEach(() => {
-  serviceExpense.resetExpenses();
-});
-
 const getAllExpenses = (req, res) => {
   const query = req.query;
 
@@ -25,7 +21,7 @@ const getExpenseById = (req, res) => {
   const id = req.params.id;
 
   if (!id) {
-    res.status(400).send('Expense ID is required');
+    res.status(404).send('Expense ID is required');
 
     return;
   }
@@ -72,21 +68,16 @@ const createExpense = (req, res) => {
 };
 
 const deleteExpense = (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
 
-  if (!id) {
-    res.status(400).send('Expense ID is required');
-
-    return;
-  }
-
-  if (!serviceExpense.deleteExpense(id)) {
-    res.status(404).send('Expense not found');
+  if (!serviceExpense.getExpenseById(+id)) {
+    res.sendStatus(404);
 
     return;
   }
 
-  res.status(204).send();
+  serviceExpense.deleteExpense(+id);
+  res.sendStatus(204);
 };
 
 const updateExpense = (req, res) => {
