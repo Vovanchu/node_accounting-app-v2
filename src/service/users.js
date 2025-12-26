@@ -3,10 +3,6 @@
 let users = [];
 
 const getAllUsers = () => {
-  if (users.length === 0) {
-    return [];
-  }
-
   return users;
 };
 
@@ -15,30 +11,33 @@ const getUserById = (id) => {
 };
 
 const createUser = (name) => {
-  const user = {
-    id: users.length + 1,
+  const maxId =
+    users.length > 0 ? Math.max(...users.map((user) => user.id)) + 1 : 1;
+
+  const userToCreate = {
+    id: maxId,
     name,
   };
 
-  users.push(user);
+  users.push(userToCreate);
 
-  return user;
+  return userToCreate;
 };
 
 const deleteUser = (id) => {
-  users = users.filter((user) => user.id !== id);
+  users = users.filter((user) => user.id !== +id);
 };
 
-const updateUser = (id, name) => {
-  const index = users.findIndex((user) => user.id === +id);
+const updateUser = (id, newName) => {
+  const userId = users.find((user) => user.id === +id);
 
-  if (index === -1) {
+  if (!userId) {
     return null;
   }
 
-  users[index].name = name;
+  userId.name = newName;
 
-  return users[index];
+  return userId;
 };
 
 const clear = () => {

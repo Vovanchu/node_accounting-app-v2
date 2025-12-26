@@ -55,14 +55,8 @@ const deleteUser = (req, res) => {
 };
 
 const updateUser = (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   const { name } = req.body;
-
-  if (!id) {
-    res.status(400).send('User ID is required');
-
-    return;
-  }
 
   if (!name) {
     res.status(400).send('Name is required');
@@ -70,15 +64,17 @@ const updateUser = (req, res) => {
     return;
   }
 
-  const updatedUser = serviceUser.updateUser(id, name);
+  const existingUser = serviceUser.getUserById(+id);
 
-  if (!updatedUser) {
-    res.status(404).send('User not found');
+  if (!existingUser) {
+    res.sendStatus(404);
 
     return;
   }
 
-  res.status(200).send(updatedUser);
+  const user = serviceUser.updateUser(+id, name);
+
+  res.status(200).send(user);
 };
 
 module.exports = {
